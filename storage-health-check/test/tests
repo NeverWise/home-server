@@ -1,0 +1,86 @@
+#!/bin/sh
+
+test_name() {
+    echo " Test $1"
+}
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+
+# Test healthy disk and partition
+file_name='healthy disk and partition'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-healthy:/dev/sdb-healthy' '/mnt/healthy' "$file_name"
+if [ -f "$file_name" ]; then
+    echo -e "${RED}✘${NC}$test_name"
+else
+    echo -e "${GREEN}✔${NC}$test_name"
+fi
+
+
+# Test unhealthy disk and partition
+file_name='unhealthy disk and partition'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-unhealthy:/dev/sdb-unhealthy' '/mnt/unhealthy' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi
+
+
+# Test healthy disk and unhealthy partition
+file_name='healthy disk and unhealthy partition'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-healthy:/dev/sdb-healthy' '/mnt/unhealthy' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi
+
+
+# Test unhealthy disk and healthy partition
+file_name='unhealthy disk and healthy partition'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-healthy:/dev/sdb-unhealthy' '/mnt/healthy' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi
+
+
+# Test mixed healthy and unhealthy informations.
+file_name='mixed healthy and unhealthy informations'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-mixed:/dev/sdb-mixed' '/mnt/mixed' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi
+
+
+# Test scrub no error found trim
+file_name='scrub no error found trim'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-healthy:/dev/sdb-healthy' '/mnt/no-error-scrub-trim' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi

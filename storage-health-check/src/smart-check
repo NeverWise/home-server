@@ -1,0 +1,71 @@
+#!/bin/sh
+
+TEST_RESULT=''
+ATTR_RESULT=''
+
+check_attribute() {
+    if [ "$ATTR_RESULT" = '' ]; then
+        TMP_ERRORS=$(echo "$TMP_OUTPUT" | grep "$2")
+        if [ $? -eq 0 ]; then
+            TMP_ERRORS=$(echo "$TMP_ERRORS" | awk '{print $10}')
+            if [ "$TMP_ERRORS" != '0' ]; then
+                ATTR_RESULT="$TMP_OUTPUT"
+            fi
+        fi
+    fi
+}
+
+# Manage of: 'SMART overall-health self-assessment test result'
+
+TMP_OUTPUT=$(smartctl -H $1 | tail +4)
+echo "$TMP_OUTPUT" | grep PASSED > /dev/null
+
+if [ $? -ne 0 ]; then
+    TEST_RESULT="$TMP_OUTPUT"
+fi
+
+# Manage of: 'SMART attributes'
+
+TMP_OUTPUT=$(smartctl -A $1 | tail +4)
+echo $1 | grep nvme > /dev/null
+
+if [ $? -eq 0 ]; then
+
+    # Test nvme attributes
+    echo "$TMP_OUTPUT" | grep -E '^Media and Data Integrity Errors:\s+0$' > /dev/null
+    if [ $? -ne 0 ]; then
+        ATTR_RESULT="$TMP_OUTPUT"
+    fi
+    if [ "$ATTR_RESULT" = '' ]; then
+        echo "$TMP_OUTPUT" | grep -E '^Error Information Log Entries:\s+0$' > /dev/null
+        if [ $? -ne 0 ]; then
+            ATTR_RESULT="$TMP_OUTPUT"
+        fi
+    fi
+else
+
+    # Test WHEN_FAILED column
+    TMP_ERRORS=$(echo "$TMP_OUTPUT" | grep '^\s*[0-9]' | awk '{print $9}' | sort | uniq)
+    if [ "$TMP_ERRORS" != '-' ]; then
+        ATTR_RESULT="$TMP_OUTPUT"
+    fi
+
+    # Test attributes
+    check_attribute $1 'Reallocated_Sector_Ct' # ID: 5
+    check_attribute $1 'Reallocated_Event_Count' # ID: 196
+    check_attribute $1 'Current_Pending_Sector' # ID: 197
+    check_attribute $1 'Offline_Uncorrectable' # ID: 198
+fi
+
+# Print result
+
+if [ -n "$TEST_RESULT" -o -n "$ATTR_RESULT" ]; then
+    RESULT=$(smartctl -i $1 | tail +4)
+    if [ -n "$TEST_RESULT" ]; then
+        RESULT="$RESULT\n\n$TEST_RESULT"
+    fi
+    if [ -n "$ATTR_RESULT" ]; then
+        RESULT="$RESULT\n\n$ATTR_RESULT"
+    fi
+    echo -e "$RESULT$(divider)" >> "$2"
+fi

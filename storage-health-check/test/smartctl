@@ -1,0 +1,4 @@
+#!/bin/sh
+
+FILE_NAME=$(command-mocker "$@")
+cat "/test/stdout/smartctl/$FILE_NAME"

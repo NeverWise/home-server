@@ -1,0 +1,4 @@
+Label: 'health'  uuid: 87654321-4321-4321-4321-987654321cba
+	Total devices 2 FS bytes used 1.00GiB
+	devid    1 size 5.00GiB used 1.02GiB path /dev/sda1
+	devid    2 size 5.00GiB used 1.01GiB path /dev/sdb1

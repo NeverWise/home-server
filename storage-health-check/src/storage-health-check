@@ -1,0 +1,15 @@
+#!/bin/sh
+
+if [ -f "$3" ]; then
+    rm "$3"
+fi
+
+export IFS=':'
+
+for disk_device in $1; do
+  smart-check "$disk_device" "$3"
+done
+
+for btrfs_partition in $2; do
+  btrfs-check "$btrfs_partition" "$3"
+done

@@ -1,0 +1,9 @@
+
+services:
+  storage-health-check:
+    image: alpine:latest
+    environment:
+      - PATH=/src:/test:$PATH
+    volumes:
+      - ./storage-health-check/src:/src
+      - ./storage-health-check/test:/test

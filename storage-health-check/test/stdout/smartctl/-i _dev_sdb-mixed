@@ -1,0 +1,19 @@
+smartctl 7.2 2020-12-30 r5155 [x86_64-linux-5.15.0-113-generic] (local build)
+Copyright (C) 2002-20, Bruce Allen, Christian Franke, www.smartmontools.org
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Western Digital Green
+Device Model:     WDC WD40EZRX-00SPEB0
+Serial Number:    WD-WCC4E0299655
+LU WWN Device Id: 5 0014ee 209251107
+Firmware Version: 80.00A80
+User Capacity:    4.000.753.476.096 bytes [4,00 TB]
+Sector Sizes:     512 bytes logical, 4096 bytes physical
+Rotation Rate:    5400 rpm
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ACS-2 (minor revision not indicated)
+SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 3.0 Gb/s)
+Local Time is:    Sun Jul  7 22:44:58 2024 CEST
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+

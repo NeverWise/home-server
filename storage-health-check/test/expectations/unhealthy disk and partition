@@ -1,0 +1,137 @@
+=== START OF INFORMATION SECTION ===
+Model Number:                       SAMSUNG MZVLW256HEHP-000L2
+Serial Number:                      S35CNX0JB26635
+Firmware Version:                   4L1QCXB7
+PCI Vendor/Subsystem ID:            0x144d
+IEEE OUI Identifier:                0x002538
+Total NVM Capacity:                 256.060.514.304 [256 GB]
+Unallocated NVM Capacity:           0
+Controller ID:                      2
+NVMe Version:                       1.2
+Number of Namespaces:               1
+Namespace 1 Size/Capacity:          256.060.514.304 [256 GB]
+Namespace 1 Utilization:            130.845.868.032 [130 GB]
+Namespace 1 Formatted LBA Size:     512
+Namespace 1 IEEE EUI-64:            002538 bb71babb42
+Local Time is:                      Sun Jul  7 22:25:04 2024 CEST
+
+=== START OF SMART DATA SECTION ===
+SMART overall-health self-assessment test result: FAILED!
+
+=== START OF SMART DATA SECTION ===
+SMART/Health Information (NVMe Log 0x02)
+Critical Warning:                   0x00
+Temperature:                        30 Celsius
+Available Spare:                    100%
+Available Spare Threshold:          10%
+Percentage Used:                    1%
+Data Units Read:                    21.270.390 [10,8 TB]
+Data Units Written:                 11.781.471 [6,03 TB]
+Host Read Commands:                 200.348.571
+Host Write Commands:                163.041.781
+Controller Busy Time:               926
+Power Cycles:                       994
+Power On Hours:                     847
+Unsafe Shutdowns:                   31
+Media and Data Integrity Errors:    0
+Error Information Log Entries:      1.692
+Warning  Comp. Temperature Time:    0
+Critical Comp. Temperature Time:    0
+Temperature Sensor 1:               30 Celsius
+Temperature Sensor 2:               33 Celsius
+
+〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Western Digital Green
+Device Model:     WDC WD40EZRX-00SPEB0
+Serial Number:    WD-WCC4E0299655
+LU WWN Device Id: 5 0014ee 209251107
+Firmware Version: 80.00A80
+User Capacity:    4.000.753.476.096 bytes [4,00 TB]
+Sector Sizes:     512 bytes logical, 4096 bytes physical
+Rotation Rate:    5400 rpm
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   ACS-2 (minor revision not indicated)
+SATA Version is:  SATA 3.0, 6.0 Gb/s (current: 3.0 Gb/s)
+Local Time is:    Sun Jul  7 22:44:58 2024 CEST
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: FAILED!
+Drive failure expected in less than 24 hours. SAVE ALL DATA.
+Failed Attributes:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  1 Raw_Read_Error_Rate     0x002f   001   001   051    Pre-fail  Always   FAILING_NOW 743726
+
+=== START OF READ SMART DATA SECTION ===
+SMART Attributes Data Structure revision number: 16
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAG     VALUE WORST THRESH TYPE      UPDATED  WHEN_FAILED RAW_VALUE
+  1 Raw_Read_Error_Rate     0x002f   001   001   051    Pre-fail  Always   FAILING_NOW 743726
+  3 Spin_Up_Time            0x0027   173   168   021    Pre-fail  Always       -       8341
+  4 Start_Stop_Count        0x0032   100   100   000    Old_age   Always       -       667
+  5 Reallocated_Sector_Ct   0x0033   190   190   140    Pre-fail  Always       -       296
+  7 Seek_Error_Rate         0x002e   200   200   000    Old_age   Always       -       0
+  9 Power_On_Hours          0x0032   099   099   000    Old_age   Always       -       1126
+ 10 Spin_Retry_Count        0x0032   100   100   000    Old_age   Always       -       0
+ 11 Calibration_Retry_Count 0x0032   100   100   000    Old_age   Always       -       0
+ 12 Power_Cycle_Count       0x0032   100   100   000    Old_age   Always       -       643
+192 Power-Off_Retract_Count 0x0032   200   200   000    Old_age   Always       -       395
+193 Load_Cycle_Count        0x0032   191   191   000    Old_age   Always       -       28513
+194 Temperature_Celsius     0x0022   125   104   000    Old_age   Always       -       27
+196 Reallocated_Event_Count 0x0032   168   168   000    Old_age   Always       -       32
+197 Current_Pending_Sector  0x0032   200   200   000    Old_age   Always       -       0
+198 Offline_Uncorrectable   0x0030   200   200   000    Old_age   Offline      -       0
+199 UDMA_CRC_Error_Count    0x0032   200   200   000    Old_age   Always       -       0
+200 Multi_Zone_Error_Rate   0x0008   200   200   000    Old_age   Offline      -       0
+
+〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
+
+/mnt/unhealthy
+
+Label: 'health'  uuid: 87654321-4321-4321-4321-987654321cba
+	Total devices 2 FS bytes used 1.00GiB
+	devid    1 size 5.00GiB used 1.02GiB path /dev/sda1
+	devid    2 size 5.00GiB used 1.01GiB path /dev/sdb1
+
+[/dev/sdb1].write_io_errs   0
+[/dev/sdb1].read_io_errs    0
+[/dev/sdb1].flush_io_errs   0
+[/dev/sdb1].corruption_errs 0
+[/dev/sdb1].generation_errs 0
+[/dev/sdb1].allocation_errs 0
+[/dev/sdb1].scrub_errs      0
+[/dev/sdb1].discard_errs    0
+[/dev/sdb1].flush_io        0
+[/dev/sdb1].discard_io      0
+[/dev/sdb1].flush_job       10
+[/dev/sdb1].discard_job     0
+[/dev/sdb1].flush_job_wait  0
+[/dev/sdb1].discard_job_wait 0
+[/dev/sdb1].flush_pending   0
+[/dev/sdb1].discard_pending 0
+[/dev/sdb1].flush_running   0
+[/dev/sdb1].discard_running 0
+[/dev/sdb1].flush_max_io    0
+[/dev/sdb1].discard_max_io  0
+[/dev/sdb1].flush_max_job   0
+[/dev/sdb1].discard_max_job 0
+[/dev/sdb1].flush_max_job_wait 0
+[/dev/sdb1].discard_max_job_wait 0
+[/dev/sdb1].flush_max_pending 0
+[/dev/sdb1].discard_max_pending 0
+[/dev/sdb1].flush_max_running 0
+[/dev/sdb1].discard_max_running 0
+
+scrub done for 42a5442f-8f4a-4f4a-8f4a-42a5442f8f4a
+Scrub started:    Wed Mar 15 14:30:11 2023
+Status:           finished
+Duration:         0:00:11
+Total to scrub:   5.02GiB
+Rate:             213.76MiB/s
+Error summary:    errors found
+
+〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜〜
+
