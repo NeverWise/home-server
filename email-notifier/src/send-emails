@@ -1,0 +1,46 @@
+#!/bin/sh
+
+TEMPLATE_FILE='/src/.msmtprc.tmpl'
+CONFIG_FILE='/root/.msmtprc'
+
+if test ! -f "${CONFIG_FILE}" && test -f "${TEMPLATE_FILE}"; then
+  envsubst \
+  "$(env | grep ^EMAIL | sed 's/^/\$/' | cut -d '=' -f 1 | tr '\n' ' ')" < \
+  "$TEMPLATE_FILE" > \
+  "$CONFIG_FILE"
+fi
+
+# Check if there are any files in the directory.
+if [ "$(ls -A /emails)" ]; then
+
+  # Replace colons with spaces.
+  EMAIL_RECIPIENTS=$(echo "$EMAIL_RECIPIENTS" | tr ':' ' ')
+
+  # Loop through all files in the directory.
+  for file in /emails/*; do
+
+    # Check if the file is a regular file (not a directory).
+    if [ -f "$file" ]; then
+
+      # Get the subject.
+      SUBJECT=$(basename "$file")
+
+      # Get the body.
+      BODY=$(cat "$file")
+
+      # Build the message.
+      MESSAGE="To: $EMAIL_RECIPIENTS\nSubject: $SUBJECT\n$BODY"
+
+      # Send email.
+      echo -e "$MESSAGE" | msmtp "$EMAIL_RECIPIENTS"
+
+      # If the email was sent correctly, the file is deleted.
+      if [ $? -eq 0 ] && [ -f "$file" ]; then
+        rm "$file"
+      else
+        # TODO: Do something to show the error.
+        exit 1
+      fi
+    fi
+  done
+fi

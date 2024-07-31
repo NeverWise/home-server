@@ -1,0 +1,75 @@
+#!/bin/sh
+
+test_name() {
+  echo " Test $1"
+}
+
+fake_send_email() {
+  create-test-email '/emails/Test Email'
+  send-emails > "$1" # Save email to file.
+}
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+
+# msmtp removal for forcing to call the mocked version of msmtp in /test directory.
+rm -f /usr/bin/msmtp
+
+
+# Test comma separated recipients (not allowed)
+EMAIL_RECIPIENTS=mail1@example.com,mail2@example.com
+file_name='comma separated recipients (not allowed)'
+test_name=$(test_name "$file_name")
+fake_send_email "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}✔${NC}$test_name"
+else
+  echo -e "${RED}✘${NC}$test_name"
+  echo "$errors"
+fi
+
+
+# Test semicolon separated recipients (not allowed)
+EMAIL_RECIPIENTS='mail1@example.com;mail2@example.com'
+file_name='semicolon separated recipients (not allowed)'
+test_name=$(test_name "$file_name")
+fake_send_email "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}✔${NC}$test_name"
+else
+  echo -e "${RED}✘${NC}$test_name"
+  echo "$errors"
+fi
+
+
+# Test space separated recipients (allowed)
+EMAIL_RECIPIENTS='mail1@example.com mail2@example.com'
+file_name='space separated recipients (allowed)'
+test_name=$(test_name "$file_name")
+fake_send_email "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}✔${NC}$test_name"
+else
+  echo -e "${RED}✘${NC}$test_name"
+  echo "$errors"
+fi
+
+
+# Test colon separated recipients (allowed)
+EMAIL_RECIPIENTS=mail1@example.com:mail2@example.com
+file_name='colon separated recipients (allowed)'
+test_name=$(test_name "$file_name")
+fake_send_email "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+  echo -e "${GREEN}✔${NC}$test_name"
+else
+  echo -e "${RED}✘${NC}$test_name"
+  echo "$errors"
+fi

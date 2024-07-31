@@ -1,0 +1,12 @@
+#!/bin/sh
+
+email_content="Hello,
+
+This is a test email to verify that the email system is working properly. Please disregard the contents of this message.
+
+If you have any questions or concerns, please let me know.
+
+Thank you,
+[Your Name]"
+
+echo "$email_content" > "$1"

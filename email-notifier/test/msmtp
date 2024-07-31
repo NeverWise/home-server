@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Read the input from stdin
+input_from_stdout=''
+while read LINE; do
+  input_from_stdout="$input_from_stdout$LINE\n"
+done
+
+# Print the input
+echo -e "$input_from_stdout$1"

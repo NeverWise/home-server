@@ -84,3 +84,16 @@ else
     echo -e "${RED}✘${NC}$test_name"
     echo "$errors"
 fi
+
+
+# Test only unhealthy disk
+file_name='only unhealthy disk'
+test_name=$(test_name "$file_name")
+storage-health-check '/dev/nvme0-unhealthy:/dev/sdb-unhealthy' '' "$file_name"
+errors=$(diff "/test/expectations/$file_name" "$file_name")
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✔${NC}$test_name"
+else
+    echo -e "${RED}✘${NC}$test_name"
+    echo "$errors"
+fi

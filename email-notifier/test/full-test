@@ -1,0 +1,16 @@
+#!/bin/sh
+
+CRON_SCHEDULE='* * * * *'
+
+echo -e "\033[1mEmail notifier test utility is running. Follow the instructions, wait a moment (cron $CRON_SCHEDULE) and then check the recipients ($EMAIL_RECIPIENTS) for the test email. (THIS TEST LOOP CONTINUOUSLY PRESS CTRL + C TO STOP IT)\033[0m\n"
+
+rm -rf /credentials/*
+
+email_file_path='/emails/Test Email'
+if [ ! -f "$email_file_path" ]; then
+  create-test-email "$email_file_path"
+fi
+
+echo "$CRON_SCHEDULE assertion-and-re-run '$email_file_path'" >> /var/spool/cron/crontabs/root
+
+run-email-notifier

@@ -1,0 +1,17 @@
+# Set default values for all following accounts.
+defaults
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+syslog         on
+
+# Email config
+account        email
+host           $EMAIL_HOST
+port           $EMAIL_PORT
+from           $EMAIL_FROM
+user           $EMAIL_USER
+passwordeval   cat /credentials/email.key | openssl enc -base64 -d -aes-256-cbc -salt -pass pass:"${ENCRYPTION_KEY}" -pbkdf2
+
+# Set a default account
+account default : email

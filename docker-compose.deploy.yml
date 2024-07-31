@@ -3,11 +3,11 @@ services:
   email-notifier:
     build:
       context: email-notifier
-    container_name: hs_email-notifier_dev
-    image: hs_email-notifier_dev
+    container_name: hs_email-notifier
+    image: hs_email-notifier
     pull_policy: never
     environment:
-      - PATH=/src:/test:$PATH
+      - PATH=/src:$PATH
       - CRON_SCHEDULE=${EMAIL_CRON_SCHEDULE}
       - ENCRYPTION_KEY=${EMAIL_ENCRYPTION_KEY}
       - EMAIL_HOST=${EMAIL_HOST}
@@ -18,16 +18,7 @@ services:
       - EMAIL_RECIPIENTS=${EMAIL_RECIPIENTS}
     volumes:
       - ./email-notifier/credentials:/credentials
-      - ./email-notifier/test/emails:/emails
-      - ./email-notifier/src:/src
-      - ./email-notifier/test:/test
-  storage-health-check:
-    image: alpine:latest
-    environment:
-      - PATH=/src:/test:$PATH
-    volumes:
-      - ./storage-health-check/src:/src
-      - ./storage-health-check/test:/test
+      - ../emails:/emails
 networks:
   default:
     name: hs

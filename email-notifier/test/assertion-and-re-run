@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+sleep 30
+
+if [ ! -f "$1" ]; then
+  echo -e "${GREEN}✔${NC} Test passed successfully. Please check the recipients ($EMAIL_RECIPIENTS) for the test email."
+  create-test-email "$1"
+else
+  echo -e "${RED}✘${NC} Test failed."
+fi
