@@ -1,46 +1,64 @@
 #!/bin/sh
 
-TEMPLATE_FILE='/src/.msmtprc.tmpl'
-CONFIG_FILE='/root/.msmtprc'
-
-if test ! -f "${CONFIG_FILE}" && test -f "${TEMPLATE_FILE}"; then
-  envsubst \
-  "$(env | grep ^EMAIL | sed 's/^/\$/' | cut -d '=' -f 1 | tr '\n' ' ')" < \
-  "$TEMPLATE_FILE" > \
-  "$CONFIG_FILE"
-fi
+mail_dir='/emails'
+exit_code=0
 
 # Check if there are any files in the directory.
-if [ "$(ls -A /emails)" ]; then
+files=$(ls -p "$mail_dir" | grep -v /)
+if [ -n "$files" ]; then
 
-  # Replace colons with spaces.
-  EMAIL_RECIPIENTS=$(echo "$EMAIL_RECIPIENTS" | tr ':' ' ')
+    # Replace colons with spaces.
+    recipients=$(echo "$RECIPIENTS" | tr ':' ' ')
 
-  # Loop through all files in the directory.
-  for file in /emails/*; do
+    # Loop through all files in the directory.
+    while IFS= read -r file; do
+        filepath="$mail_dir/$file"
 
-    # Check if the file is a regular file (not a directory).
-    if [ -f "$file" ]; then
+        # Get the subject.
+        subject=$(basename "$file")
 
-      # Get the subject.
-      SUBJECT=$(basename "$file")
+        # Get the body.
+        body=$(cat "$filepath")
 
-      # Get the body.
-      BODY=$(cat "$file")
+        # Check if $FROM is set; if not, $USER is used.
+        sender=$([ -n "$FROM" ] && echo "$FROM" || echo "$USER")
 
-      # Build the message.
-      MESSAGE="To: $EMAIL_RECIPIENTS\nSubject: $SUBJECT\n$BODY"
+        # Check if $DISPLAY_NAME is set and not empty.
+        if [ -n "$DISPLAY_NAME" ]; then
+            # Format as "Display Name <email>".
+            sender="$DISPLAY_NAME <$sender>"
+        fi
 
-      # Send email.
-      echo -e "$MESSAGE" | msmtp "$EMAIL_RECIPIENTS"
+        # Build the message.
+        message="From: $sender\nTo: $recipients\nSubject: $subject\n$body"
 
-      # If the email was sent correctly, the file is deleted.
-      if [ $? -eq 0 ] && [ -f "$file" ]; then
-        rm "$file"
-      else
-        # TODO: Do something to show the error.
-        exit 1
-      fi
-    fi
-  done
+        # Send email.
+        echo -e "$message" | msmtp \
+            --auth=on \
+            --tls=on \
+            --tls-trust-file='/etc/ssl/certs/ca-certificates.crt' \
+            --logfile=- \
+            --logfile-time-format=none \
+            --host="$HOST" \
+            --port="$PORT" \
+            --user="$USER" \
+            --passwordeval='openssl enc -d -aes-256-cbc -salt -k "$OPENSSL_PWD" -pbkdf2 -iter 100000 -in /etc/credential' \
+            --read-envelope-from \
+            --read-recipients
+
+        tmp_exit_code=$?
+        # If the email was sent correctly, the file is deleted.
+        if [ $tmp_exit_code -eq 0 ]; then
+            if [ -f "$filepath" ]; then
+                rm "$filepath"
+            fi
+            echo "Email '$file' sent successfully."
+        else
+            exit_code="$tmp_exit_code"
+            echo "Error during sending the '$file' email." >&2
+        fi
+    done < <(echo "$files")
+else
+    echo 'No email to send.'
 fi
+exit $exit_code

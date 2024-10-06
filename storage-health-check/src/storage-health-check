@@ -7,9 +7,9 @@ fi
 export IFS=':'
 
 for disk_device in $1; do
-  smart-check "$disk_device" "$3"
+    smart-check "$disk_device" "$3"
 done
 
 for btrfs_partition in $2; do
-  btrfs-check "$btrfs_partition" "$3"
+    btrfs-check "$btrfs_partition" "$3"
 done

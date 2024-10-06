@@ -1,3 +1,4 @@
+From: test@example.com
 To: mail1@example.com mail2@example.com
 Subject: Test Email
 Hello,
@@ -8,4 +9,4 @@ If you have any questions or concerns, please let me know.
 
 Thank you,
 [Your Name]
-mail1@example.com mail2@example.com
+

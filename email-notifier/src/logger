@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# Read from standard input and format the output
+while IFS= read -r line; do
+    # Use grep to extract the labels and their values
+    key_val=$(echo "$line" | grep -oE '([a-zA-Z0-9._]+)=("[^"]*"|[^ ]+)')
+    while IFS='=' read -r key value; do
+        # Remove any quotes from the value
+        value=$(echo "$value" | tr -d '"')
+        # Set the variables based on the key
+        case "$key" in
+            time) time="$value" ;;
+            level) level="$value" ;;
+            msg) msg="$value" ;;
+            channel) channel="$value" ;;
+        esac
+    done < <(echo "$key_val")
+
+    # If the channel is stderr or the message contains the word error, set level to error
+    if [ "$channel" = 'stderr' ] || echo "$msg" | grep -q "error"; then
+        level='error'
+        channel=''
+    fi
+
+    level=$(echo "$level" | tr '[:lower:]' '[:upper:]') # Convert level to uppercase
+
+    echo "[$time][$level] $msg"
+done

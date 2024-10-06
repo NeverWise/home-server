@@ -3,22 +3,21 @@ services:
   email-notifier:
     build:
       context: email-notifier
-    container_name: hs_email-notifier
+      args:
+        CRON_SCHEDULE: ${EMAIL_CRON_SCHEDULE:-*/15 * * * *}
+        OPENSSL_PWD: ${EMAIL_OPENSSL_PWD:?e.g. changeme}
     image: hs_email-notifier
     pull_policy: never
     environment:
-      - PATH=/src:$PATH
-      - CRON_SCHEDULE=${EMAIL_CRON_SCHEDULE}
-      - ENCRYPTION_KEY=${EMAIL_ENCRYPTION_KEY}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      - EMAIL_FROM=${EMAIL_FROM}
-      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME}
-      - EMAIL_USER=${EMAIL_USER}
-      - EMAIL_RECIPIENTS=${EMAIL_RECIPIENTS}
+      HOST: ${EMAIL_HOST:?e.g. required.email.host}
+      PORT: ${EMAIL_PORT:?e.g. 587}
+      USER: ${EMAIL_USER:?e.g. requiredUser}
+      DISPLAY_NAME: ${EMAIL_DISPLAY_NAME:-}
+      FROM: ${EMAIL_FROM:-}
+      RECIPIENTS: ${EMAIL_RECIPIENTS:?e.g. mail1@example.com:mail2@example.com}
     volumes:
-      - ./email-notifier/credentials:/credentials
       - ../emails:/emails
+      - ../logs:/logs
 networks:
   default:
     name: hs

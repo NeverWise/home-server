@@ -4,20 +4,17 @@ SHOW_RESULT=''
 STATS_RESULT=''
 SCRUB_RESULT=''
 
-
 TMP_OUTPUT=$(btrfs fi show $1)
 TMP_ERRORS=$(echo "$TMP_OUTPUT" | grep 'devid' | awk '{print $6}' | sort | uniq | wc -l)
 if [ "$TMP_ERRORS" -gt 1 ]; then
     SHOW_RESULT="$TMP_OUTPUT"
 fi
 
-
 TMP_OUTPUT=$(btrfs device stats $1)
 TMP_ERRORS=$(echo "$TMP_OUTPUT" | awk '{print $NF}' | sort | uniq)
 if [ "$TMP_ERRORS" != '0' ]; then
     STATS_RESULT="$TMP_OUTPUT"
 fi
-
 
 TMP_OUTPUT=$(btrfs scrub start -B $1)
 TMP_ERRORS=$(echo "$TMP_OUTPUT" | grep 'Error summary:')
@@ -41,5 +38,5 @@ if [ -n "$SHOW_RESULT" -o -n "$STATS_RESULT" -o -n "$SCRUB_RESULT" ]; then
     if [ -n "$SCRUB_RESULT" ]; then
         RESULT="$RESULT\n\n$SCRUB_RESULT"
     fi
-    echo -e "$RESULT$(divider)" >> "$2"
+    echo -e "$RESULT$(divider)" >>"$2"
 fi

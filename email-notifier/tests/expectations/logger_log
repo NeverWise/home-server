@@ -1,0 +1,17 @@
+[2024-11-14T21:07:45Z][WARNING] process reaping disabled, not pid 1
+[2024-11-14T21:07:45Z][INFO] read crontab: /etc/crontab
+[2024-11-14T21:07:45Z][DEBUG] try parse (5 fields): '* * * * *'
+[2024-11-14T21:07:45Z][DEBUG] job will run next at 2024-11-14 21:08:00 +0000 UTC
+[2024-11-14T21:08:00Z][INFO] starting
+[2024-11-14T21:08:01Z][ERROR] none host=smtp.gmail.com tls=on auth=on user=matteo84gdl@gmail.com from=matteo84gdl@gmail.com recipients=matteopomi@libero.it smtpstatus=535 smtpmsg='535-5.7.8 Username and Password not accepted. For more information, go to\\n535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-432dab789fasm33642015e9.18 - gsmtp' errormsg='authentication failed (method PLAIN)' exitcode=EX_NOPERM
+[2024-11-14T21:08:01Z][ERROR] msmtp: authentication failed (method PLAIN)
+[2024-11-14T21:08:01Z][ERROR] msmtp: server message: 535-5.7.8 Username and Password not accepted. For more information, go to
+[2024-11-14T21:08:01Z][ERROR] msmtp: server message: 535 5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-432dab789fasm33642015e9.18 - gsmtp
+[2024-11-14T21:08:01Z][ERROR] msmtp: could not send mail
+[2024-11-14T21:08:01Z][ERROR] Error during sending the 'Test Email' email.
+[2024-11-14T21:08:01Z][ERROR] error running command: exit status 77
+[2024-11-14T21:08:01Z][DEBUG] job will run next at 2024-11-14 21:09:00 +0000 UTC
+[2024-11-14T21:08:19Z][INFO] received interrupt, shutting down
+[2024-11-14T21:08:19Z][INFO] waiting for jobs to finish
+[2024-11-14T21:08:19Z][DEBUG] shutting down
+[2024-11-14T21:08:19Z][INFO] exiting

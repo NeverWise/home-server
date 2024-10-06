@@ -1,4 +1,4 @@
 #!/bin/sh
 
 FILE_NAME=$(command-mocker "$@")
-cat "/test/stdout/btrfs/$FILE_NAME"
+cat "$TEST_PATH/stdout/btrfs/$FILE_NAME"

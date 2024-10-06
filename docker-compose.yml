@@ -3,31 +3,34 @@ services:
   email-notifier:
     build:
       context: email-notifier
-    container_name: hs_email-notifier_dev
-    image: hs_email-notifier_dev
+      args:
+        TEST_PATH: '/tests'
+        CRON_SCHEDULE: ${EMAIL_CRON_SCHEDULE:-* * * * *}
+        OPENSSL_PWD: ${EMAIL_OPENSSL_PWD:?e.g. changeme}
+    image: hs_email-notifier:develop
     pull_policy: never
     environment:
-      - PATH=/src:/test:$PATH
-      - CRON_SCHEDULE=${EMAIL_CRON_SCHEDULE}
-      - ENCRYPTION_KEY=${EMAIL_ENCRYPTION_KEY}
-      - EMAIL_HOST=${EMAIL_HOST}
-      - EMAIL_PORT=${EMAIL_PORT}
-      - EMAIL_FROM=${EMAIL_FROM}
-      - EMAIL_FROM_NAME=${EMAIL_FROM_NAME}
-      - EMAIL_USER=${EMAIL_USER}
-      - EMAIL_RECIPIENTS=${EMAIL_RECIPIENTS}
+      HOST: ${EMAIL_HOST:?e.g. required.email.host}
+      PORT: ${EMAIL_PORT:?e.g. 587}
+      USER: ${EMAIL_USER:?e.g. requiredUser}
+      DISPLAY_NAME: ${EMAIL_DISPLAY_NAME:-}
+      FROM: ${EMAIL_FROM:-}
+      RECIPIENTS: ${EMAIL_RECIPIENTS:?e.g. mail1@example.com:mail2@example.com}
     volumes:
-      - ./email-notifier/credentials:/credentials
-      - ./email-notifier/test/emails:/emails
+      - ./email-notifier/tests/emails:/emails
+      - ./email-notifier/tests/logs:/logs
       - ./email-notifier/src:/src
-      - ./email-notifier/test:/test
+      - ./email-notifier/tests:/tests
   storage-health-check:
-    image: alpine:latest
-    environment:
-      - PATH=/src:/test:$PATH
+    build:
+      context: storage-health-check
+      args:
+        TEST_PATH: '/tests'
+    image: hs_storage-health-check:develop
+    pull_policy: never
     volumes:
       - ./storage-health-check/src:/src
-      - ./storage-health-check/test:/test
+      - ./storage-health-check/tests:/tests
 networks:
   default:
-    name: hs
+    name: hs-dev

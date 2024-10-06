@@ -1,5 +1,7 @@
 #!/bin/sh
 
+test_email_file_path='/emails/Test Email'
+
 email_content="Hello,
 
 This is a test email to verify that the email system is working properly. Please disregard the contents of this message.
@@ -9,4 +11,5 @@ If you have any questions or concerns, please let me know.
 Thank you,
 [Your Name]"
 
-echo "$email_content" > "$1"
+echo "$email_content" >"$test_email_file_path"
+echo "$test_email_file_path"
